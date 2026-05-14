@@ -23,10 +23,10 @@ export default function HeroSection() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#0b103e] hover:bg-blue-900 text-white font-medium py-3.5 px-8 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#0b103e] hover:bg-blue-900 text-white font-medium py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
               Start Your Scan <ArrowRight size={18} />
             </button>
-            <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-medium py-3 px-8 rounded-full transition-all">
+            <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-medium py-3 px-8 rounded-xl transition-all">
               How it Works
             </button>
           </div>
@@ -37,9 +37,9 @@ export default function HeroSection() {
           {/* Decorative background blur */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-blue-400/20 rounded-full blur-[100px] -z-10"></div>
           
-          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-gray-900 bg-gray-900 aspect-[9/16] max-h-[600px] w-full max-w-[300px] mx-auto">
+          <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-gray-900 bg-gray-900 aspect-[9/16] max-h-[550px] w-full max-w-[500px] mx-auto">
             <Image 
-              src="/images/phone_scan.png" 
+              src="/images/unnamed.png" 
               alt="AI Skin Scan on Mobile" 
               fill
               className="object-cover"
