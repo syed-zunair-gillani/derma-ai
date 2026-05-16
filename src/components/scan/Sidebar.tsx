@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from "react";
+import React from "react";
+import { useSidebar } from "@/src/context/SidebarContext";
 
 const historyItems = [
     {
@@ -31,7 +32,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps) {
-    const [isOpen, setIsOpen] = useState(true);
+    const { isOpen, setIsOpen } = useSidebar();
 
     return (
         <>
@@ -104,16 +105,7 @@ export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps
                 </div>
             </aside>
 
-            {/* Toggle Open Button when closed */}
-            {!isOpen && (
-                <button 
-                    onClick={() => setIsOpen(true)}
-                    className="hidden lg:flex fixed left-0 top-20 bg-white border border-slate-200 shadow-md rounded-r-xl p-2 z-50 text-slate-500 hover:text-indigo-600 transition-all hover:pl-3"
-                    title="Open History"
-                >
-                    <span className="material-symbols-outlined">menu_open</span>
-                </button>
-            )}
+            {/* The sidebar is now toggled via the button in the Header */}
         </>
     );
 }
