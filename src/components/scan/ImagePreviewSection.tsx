@@ -5,9 +5,11 @@ import React from "react";
 interface ImagePreviewSectionProps {
   images: string[];
   onClearAll: () => void;
+  onAnalyze: () => void;
+  isAnalyzing: boolean;
 }
 
-export default function ImagePreviewSection({ images, onClearAll }: ImagePreviewSectionProps) {
+export default function ImagePreviewSection({ images, onClearAll, onAnalyze, isAnalyzing }: ImagePreviewSectionProps) {
   return (
     <div className="lg:col-span-5 flex flex-col gap-6">
       {/* Preview Card */}
@@ -69,12 +71,26 @@ export default function ImagePreviewSection({ images, onClearAll }: ImagePreview
             </button>
           </div>
 
-          <button className="w-full bg-indigo-900 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] transition-all flex items-center justify-center gap-3">
-            Analyze Now
-
-            <span className="material-symbols-outlined">
-              analytics
-            </span>
+          <button 
+            onClick={onAnalyze}
+            disabled={isAnalyzing}
+            className="w-full bg-indigo-900 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:-translate-y-0 disabled:active:scale-100"
+          >
+            {isAnalyzing ? (
+              <>
+                Processing...
+                <span className="material-symbols-outlined animate-spin">
+                  sync
+                </span>
+              </>
+            ) : (
+              <>
+                Analyze Now
+                <span className="material-symbols-outlined">
+                  analytics
+                </span>
+              </>
+            )}
           </button>
         </div>
       </div>

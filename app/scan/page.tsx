@@ -11,25 +11,29 @@ import SkinAnalysisHeader from "@/src/components/scan/SkinAnalysisHeader";
 export default function DermAIHistoryPage() {
     const [isNewScan, setIsNewScan] = useState(true);
     const [isAuthenticated, setIsAuthanticated] = useState(true);
+    const [haveResult, setHaveResult] = useState(false);
 
     return (
         <div className="bg-slate-50 text-slate-900 min-h-screen">
             <div className="flex mx-auto min-h-screen">
                 {
                     isAuthenticated && <Sidebar
-                        onNewScanClick={() => setIsNewScan(true)}
+                        onNewScanClick={() => {
+                            setIsNewScan(true);
+                            setHaveResult(false);
+                        }}
                         onHistoryClick={() => setIsNewScan(false)}
                     />
                 }
 
                 {/* Main Content */}
                 <main className="flex-1 px-6 pt-24 pb-12 w-full">
-                    {isNewScan ? (
+                    {isNewScan && !haveResult ? (
                         <div className="space-y-8 lg:mt-2 max-w-7xl mx-auto">
                             {
                                 !isAuthenticated && <SkinAnalysisHeader />
                             }
-                            <SkinAnalysisUpload />
+                            <SkinAnalysisUpload onAnalysisComplete={() => setHaveResult(true)} />
                         </div>
                     ) : (
                         <div className="space-y-12">
