@@ -154,19 +154,19 @@ const RegisterPage = () => {
                   className="text-sm text-slate-500"
                 >
                   I agree to the{" "}
-                  <a
-                    href="#"
+                  <Link
+                    href="/terms"
                     className="font-semibold text-indigo-900 hover:underline"
                   >
                     Terms
-                  </a>{" "}
+                  </Link>{" "}
                   and{" "}
-                  <a
-                    href="#"
+                  <Link
+                    href="/privacy"
                     className="font-semibold text-indigo-900 hover:underline"
                   >
                     Privacy Policy
-                  </a>
+                  </Link>
                 </label>
               </div>
 
