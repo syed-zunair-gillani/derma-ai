@@ -79,18 +79,6 @@ export default function ImagePreviewSection({ images, onClearAll }: ImagePreview
         </div>
       </div>
 
-      {/* Tip Card */}
-      <div className="bg-emerald-50 text-emerald-900 rounded-2xl p-5 flex items-start gap-3 border border-emerald-100">
-        <span className="material-symbols-outlined">
-          tips_and_updates
-        </span>
-
-        <p className="text-sm font-medium leading-relaxed">
-          Tip: For best results, ensure the skin area is well-lit and the
-          camera is held 10cm away from the subject.
-        </p>
-      </div>
-
       {/* Scan Animation Keyframes */}
       <style jsx>{`
         @keyframes scan {
