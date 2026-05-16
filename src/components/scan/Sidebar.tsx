@@ -36,20 +36,29 @@ export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps
 
     return (
         <>
+            {/* Mobile Overlay */}
+            {isOpen && (
+                <div 
+                    className="lg:hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[60]"
+                    onClick={() => setIsOpen(false)}
+                />
+            )}
+
             <aside 
-                className={`hidden lg:flex flex-col bg-white sticky top-[69px] h-screen overflow-hidden transition-[width,opacity] duration-300 ease-in-out border-slate-200 ${
-                    isOpen ? 'w-80 border-r opacity-100' : 'w-0 border-r-0 opacity-0'
+                className={`fixed lg:sticky top-0 lg:top-[69px] left-0 z-[70] lg:z-40 h-screen lg:h-[calc(100vh-69px)] bg-white border-slate-200 transition-all duration-300 ease-in-out flex flex-col overflow-hidden ${
+                    isOpen 
+                    ? 'w-full sm:w-80 border-r translate-x-0 opacity-100' 
+                    : 'w-0 lg:w-80 lg:border-r -translate-x-full lg:translate-x-0 border-r-0 opacity-0 lg:opacity-100'
                 }`}
-                style={{ height: "calc(100vh - 69px)" }}
             >
-                <div className="w-80 flex flex-col h-full">
+                <div className="w-full sm:w-80 flex flex-col h-full">
                     <div className="p-6 py-3 border-b border-slate-100 bg-slate-50/30 flex justify-between items-center">
                         <h3 className="text-sm font-bold text-indigo-900 uppercase tracking-widest flex items-center gap-2">
                             Previous History
                         </h3>
                         <button 
                             onClick={() => setIsOpen(false)} 
-                            className="text-slate-400 hover:text-indigo-600 transition-colors p-1 rounded-md hover:bg-slate-200/50 flex items-center justify-center"
+                            className="lg:hidden text-slate-400 hover:text-indigo-600 transition-colors p-1 rounded-md hover:bg-slate-200/50 flex items-center justify-center"
                             title="Close Sidebar"
                         >
                             <span className="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
