@@ -27,7 +27,7 @@ export default function DermAIHistoryPage() {
                 }
 
                 {/* Main Content */}
-                <main className="flex-1 px-6 pt-24 pb-12 w-full">
+                <main className="flex-1 px-2 lg:px-6 pt-24 pb-12 w-full">
                     {isNewScan && !haveResult ? (
                         <div className="space-y-8 lg:mt-2 max-w-7xl mx-auto">
                             {

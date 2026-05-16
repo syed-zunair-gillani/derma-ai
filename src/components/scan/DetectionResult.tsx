@@ -11,7 +11,7 @@ function SkinConditionCard() {
         <div className="bg-white rounded-xl p-5 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 h-full print:shadow-none">
             <div className="flex flex-col md:flex-row print:flex-row gap-6 items-stretch h-full">
                 {/* Image Section */}
-                <div className="w-full md:w-[35%] print:w-[35%] flex-shrink-0">
+                <div className="w-full md:w-[35%] print:w-[35%] flex-shrink-0 h-full lg:h-[200px] xl:h-full">
                     <div className="relative rounded-xl overflow-hidden aspect-[4/3] md:aspect-square print:aspect-square h-full w-full">
                         <img
                             src={imageUrl}
@@ -64,7 +64,7 @@ function SkinConditionCard() {
                     </div>
 
                     {/* Bottom Cards */}
-                    <div className="flex gap-4 w-full print:flex-row">
+                    <div className="flex flex-col sm:flex-row gap-4 w-full print:flex-row">
                         <div className="bg-slate-50/80 border border-slate-100 rounded-xl p-3.5 flex-1">
                             <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
                                 Primary Causes
@@ -218,22 +218,28 @@ export default function DetectionResult() {
             </div>
 
             {/* Printable Content */}
-            <div ref={printRef} className="flex flex-col gap-6 w-full p-2 sm:p-0">
+            <div ref={printRef} className="flex flex-col gap-6 w-full">
                 {/* Top Row */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 print:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 print:col-span-2">
+                <div className="flex flex-col lg:flex-row print:flex-row gap-6 w-full">
+                    <div className="w-full lg:w-2/3 print:w-2/3">
                         <SkinConditionCard />
                     </div>
-                    <div className="lg:col-span-1 print:col-span-1">
+                    <div className="w-full lg:w-1/3 print:w-1/3">
                         <LifestyleBalanceCard />
                     </div>
                 </div>
 
                 {/* Bottom Row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-6">
-                    <RoutineCard type="morning" />
-                    <RoutineCard type="night" />
-                    <CareChecklistCard />
+                <div className="flex flex-col md:flex-row print:flex-row gap-6 w-full">
+                    <div className="w-full md:w-1/3 print:w-1/3">
+                        <RoutineCard type="morning" />
+                    </div>
+                    <div className="w-full md:w-1/3 print:w-1/3">
+                        <RoutineCard type="night" />
+                    </div>
+                    <div className="w-full md:w-1/3 print:w-1/3">
+                        <CareChecklistCard />
+                    </div>
                 </div>
             </div>
         </div>
