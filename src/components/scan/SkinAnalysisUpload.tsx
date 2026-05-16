@@ -1,21 +1,29 @@
-import React from "react";
-import SkinAnalysisHeader from "./SkinAnalysisHeader";
+'use client'
+
+import React, { useState } from "react";
 import UploadDropzone from "./UploadDropzone";
 import ImagePreviewSection from "./ImagePreviewSection";
 
 export default function SkinAnalysisUpload() {
-  return (
-    <div className="">
-      <main className="flex flex-col items-center">
-        <SkinAnalysisHeader />
+  const [images, setImages] = useState<string[]>([]);
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-          <UploadDropzone />
-          <ImagePreviewSection />
-        </div>
-      </main>
-    </div>
+  const handleUpload = (newImages: string[]) => {
+    setImages((prev) => [...prev, ...newImages]);
+  };
+
+  const handleClearAll = () => {
+    setImages([]);
+  };
+
+  return (
+    <main className="flex flex-col items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+        <UploadDropzone onUpload={handleUpload} fullWidth={images.length === 0} />
+        {images.length > 0 && (
+          <ImagePreviewSection images={images} onClearAll={handleClearAll} />
+        )}
+      </div>
+    </main>
   );
 }
 

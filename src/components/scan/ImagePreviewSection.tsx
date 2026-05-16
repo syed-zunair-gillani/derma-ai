@@ -2,20 +2,19 @@
 
 import React from "react";
 
-const previewImages = [
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuB-BAmqGhIWoHXSGXsds1i0c9PJNH79BYPe5tPDsWHGtfnt6jg52RjFRpMwGYzfiSGvplJm7wCDGrgj78g7PMLnyFVrVkxcPmngR43L0cGv0UsSKfgTewZjufiMtNiCl3WnjunzjQpqcTQQpWxNxQD_8Yf7hSj2vbwDYeIiMTLhUrJH-DLZZCQaW7va6RTSBRhndl2kUkFthwR1UvTQL8oaqCDeirsdVRvspdhgNuc_PPLSHqXSvfaidU1bwWKLKuRtnfOohWZv7sg",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuB-BAmqGhIWoHXSGXsds1i0c9PJNH79BYPe5tPDsWHGtfnt6jg52RjFRpMwGYzfiSGvplJm7wCDGrgj78g7PMLnyFVrVkxcPmngR43L0cGv0UsSKfgTewZjufiMtNiCl3WnjunzjQpqcTQQpWxNxQD_8Yf7hSj2vbwDYeIiMTLhUrJH-DLZZCQaW7va6RTSBRhndl2kUkFthwR1UvTQL8oaqCDeirsdVRvspdhgNuc_PPLSHqXSvfaidU1bwWKLKuRtnfOohWZv7sg",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuB-BAmqGhIWoHXSGXsds1i0c9PJNH79BYPe5tPDsWHGtfnt6jg52RjFRpMwGYzfiSGvplJm7wCDGrgj78g7PMLnyFVrVkxcPmngR43L0cGv0UsSKfgTewZjufiMtNiCl3WnjunzjQpqcTQQpWxNxQD_8Yf7hSj2vbwDYeIiMTLhUrJH-DLZZCQaW7va6RTSBRhndl2kUkFthwR1UvTQL8oaqCDeirsdVRvspdhgNuc_PPLSHqXSvfaidU1bwWKLKuRtnfOohWZv7sg",
-];
+interface ImagePreviewSectionProps {
+  images: string[];
+  onClearAll: () => void;
+}
 
-export default function ImagePreviewSection() {
+export default function ImagePreviewSection({ images, onClearAll }: ImagePreviewSectionProps) {
   return (
     <div className="lg:col-span-5 flex flex-col gap-6">
       {/* Preview Card */}
       <div className="bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col">
         <div className="p-6 bg-slate-50/60">
           <div className="grid grid-cols-2 gap-4">
-            {previewImages.map((img, index) => (
+            {images.map((img, index) => (
               <div
                 key={index}
                 className="relative aspect-square rounded-xl overflow-hidden border border-slate-200 shadow-sm"
@@ -57,11 +56,11 @@ export default function ImagePreviewSection() {
               </p>
 
               <p className="font-semibold text-slate-900">
-                4 files selected
+                {images.length} files selected
               </p>
             </div>
 
-            <button className="text-slate-500 hover:text-red-500 transition-colors flex items-center gap-1">
+            <button onClick={onClearAll} className="text-slate-500 hover:text-red-500 transition-colors flex items-center gap-1">
               <span className="text-xs font-bold">Clear All</span>
 
               <span className="material-symbols-outlined text-lg">

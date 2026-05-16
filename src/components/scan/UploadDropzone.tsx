@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useRef } from "react";
 
-export default function UploadDropzone() {
+interface UploadDropzoneProps {
+  onUpload: (images: string[]) => void;
+  fullWidth?: boolean;
+}
+
+export default function UploadDropzone({ onUpload, fullWidth }: UploadDropzoneProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newImages = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+      onUpload(newImages);
+    }
+  };
+
   return (
-    <div className="lg:col-span-7 flex flex-col gap-6">
+    <div className={`${fullWidth ? 'lg:col-span-12 max-w-4xl mx-auto w-full' : 'lg:col-span-7'} flex flex-col gap-6 transition-all duration-500`}>
       {/* Upload Box */}
-      <div className="bg-white rounded-2xl shadow-sm border-2 border-dashed border-slate-300 p-12 flex flex-col items-center justify-center min-h-[400px] text-center hover:border-indigo-600 transition-colors cursor-pointer group">
+      <div 
+        className="bg-white rounded-2xl shadow-sm border-2 border-dashed border-slate-300 p-12 flex flex-col items-center justify-center min-h-[400px] text-center hover:border-indigo-600 transition-colors cursor-pointer group"
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          className="hidden" 
+          multiple 
+          accept="image/jpeg, image/png" 
+          onChange={handleFileChange}
+        />
         <div className="bg-slate-100 p-4 rounded-full mb-5 group-hover:scale-110 transition-transform">
           <span className="material-symbols-outlined text-indigo-700 text-5xl">
             cloud_upload
