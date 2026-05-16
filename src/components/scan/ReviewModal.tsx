@@ -40,7 +40,7 @@ export default function ReviewModal({ isOpen, onClose }: ReviewModalProps) {
                         <h2 className="text-2xl font-bold text-slate-800">Write a Review</h2>
                         <button 
                             onClick={onClose}
-                            className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-600"
+                            className="p-2 pb-0 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-600"
                         >
                             <span className="material-symbols-outlined">close</span>
                         </button>
