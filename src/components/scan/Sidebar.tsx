@@ -48,7 +48,7 @@ export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps
                 className={`fixed lg:sticky top-0 lg:top-[69px] left-0 z-[70] lg:z-40 h-screen lg:h-[calc(100vh-69px)] bg-white border-slate-200 transition-all duration-300 ease-in-out flex flex-col overflow-hidden ${
                     isOpen 
                     ? 'w-full sm:w-80 border-r translate-x-0 opacity-100' 
-                    : 'w-0 lg:w-80 lg:border-r -translate-x-full lg:translate-x-0 border-r-0 opacity-0 lg:opacity-100'
+                    : 'w-0 -translate-x-full border-r-0 opacity-0'
                 }`}
             >
                 <div className="w-full sm:w-80 flex flex-col h-full">
@@ -58,7 +58,7 @@ export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps
                         </h3>
                         <button 
                             onClick={() => setIsOpen(false)} 
-                            className="lg:hidden text-slate-400 hover:text-indigo-600 transition-colors p-1 rounded-md hover:bg-slate-200/50 flex items-center justify-center"
+                            className="text-slate-400 hover:text-indigo-600 transition-colors p-1 rounded-md hover:bg-slate-200/50 flex items-center justify-center"
                             title="Close Sidebar"
                         >
                             <span className="material-symbols-outlined text-xl">keyboard_double_arrow_left</span>
