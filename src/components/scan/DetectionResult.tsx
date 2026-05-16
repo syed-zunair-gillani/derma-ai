@@ -176,6 +176,22 @@ function CareChecklistCard() {
 export default function DetectionResult() {
     return (
         <div className="flex flex-col gap-6 w-full">
+            {/* Action Bar */}
+            <div className="flex flex-wrap justify-end items-center gap-3 w-full">
+                <button className="flex items-center gap-2 px-4 py-2.5 bg-white text-indigo-600 font-bold text-sm rounded-xl border border-indigo-100 hover:bg-indigo-50 transition-colors shadow-sm">
+                    <span className="material-symbols-outlined text-[20px]">share</span>
+                    Share with Doctor
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2.5 bg-white text-slate-700 font-bold text-sm rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm">
+                    <span className="material-symbols-outlined text-[20px]">rate_review</span>
+                    Write your review
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white font-bold text-sm rounded-xl hover:bg-indigo-700 transition-colors shadow-sm">
+                    <span className="material-symbols-outlined text-[20px]">download</span>
+                    Download PDF
+                </button>
+            </div>
+
             {/* Top Row */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
