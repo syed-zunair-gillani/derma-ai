@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
+import ReviewModal from "./ReviewModal";
 
 const imageUrl =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuD1DYnBxcNlQJsJFg76E7bXFfvuqNBi4ea8JSXqh8sA754d5xHNoakhpP49C8Bdkue22xgSQ5Mi1W1nN2O8tZ3Ci13zh9CcOsxth4zu5WxScNQ3Mls9cJnPvdmKCuxMImfiH7WNholjqEt_uLuadBsmVkJnqlOpRLXaDdCQnqesB5KKOIvHtZxJwdhdiyrW0nST4LjtGwv-xK1MaMhDpkZL47SRaGrKsH_qDa8bfmXH2jiwA1eEq4SLkMm0txvcuuVjK9lJ0R2M7pc";
@@ -178,6 +179,7 @@ function CareChecklistCard() {
 
 export default function DetectionResult() {
     const printRef = useRef<HTMLDivElement>(null);
+    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
     const handleDownloadPdf = useReactToPrint({
         contentRef: printRef,
@@ -204,7 +206,10 @@ export default function DetectionResult() {
                     <span className="material-symbols-outlined text-[20px]">share</span>
                     Share with Doctor
                 </button>
-                <button className="flex flex-col sm:flex-row items-center sm:gap-2 px-3 sm:px-4 py-2.5 bg-white text-slate-700 font-bold text-[12px] sm:text-sm rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm">
+                <button 
+                    onClick={() => setIsReviewModalOpen(true)}
+                    className="flex flex-col sm:flex-row items-center sm:gap-2 px-3 sm:px-4 py-2.5 bg-white text-slate-700 font-bold text-[12px] sm:text-sm rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm"
+                >
                     <span className="material-symbols-outlined text-[20px]">rate_review</span>
                     Write your review
                 </button>
@@ -216,6 +221,12 @@ export default function DetectionResult() {
                     Download PDF
                 </button>
             </div>
+
+            {/* Review Modal */}
+            <ReviewModal 
+                isOpen={isReviewModalOpen} 
+                onClose={() => setIsReviewModalOpen(false)} 
+            />
 
             {/* Printable Content */}
             <div ref={printRef} className="flex flex-col gap-6 w-full">
