@@ -21,8 +21,8 @@ export default function Header() {
 
       {/* Actions */}
       <div className="flex items-center gap-4">
-        <Link href="#" className="text-sm font-medium text-gray-700 hover:text-gray-900 hidden sm:block">Login</Link>
-        <Link href="#" className="bg-[#0b103e] hover:bg-blue-900 text-white text-sm font-medium py-2 px-5 rounded-lg transition-all shadow-md hover:shadow-lg">
+        <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-gray-900 hidden sm:block">Login</Link>
+        <Link href="/register" className="bg-[#0b103e] hover:bg-blue-900 text-white text-sm font-medium py-2 px-5 rounded-lg transition-all shadow-md hover:shadow-lg">
           Sign Up
         </Link>
       </div>

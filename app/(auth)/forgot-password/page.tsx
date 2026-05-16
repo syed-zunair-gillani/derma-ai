@@ -5,7 +5,7 @@ const ResetPassword = () => {
     <div className="bg-[#f7f9fb] min-h-screen flex flex-col text-[#191c1e]">
 
       {/* Main */}
-      <main className="flex-grow flex items-center justify-center px-6 py-12 relative overflow-hidden">
+      <main className="flex-grow flex items-center justify-center px-6 pt-28 pb-12 relative overflow-hidden">
         {/* Background Blur */}
         <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-30">
           <div className="absolute top-1/4 -left-20 w-96 h-96 bg-indigo-200 blur-[120px] rounded-full"></div>

@@ -10,6 +10,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
+import Link from "next/link";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +27,7 @@ const RegisterPage = () => {
       </div>
 
       {/* Main */}
-      <main className="flex flex-1 items-center justify-center px-6 py-16">
+      <main className="flex flex-1 items-center justify-center px-6 pt-28 pb-16">
         <div className="w-full max-w-md">
           {/* Branding Icon */}
           <div className="mb-8 flex justify-center">
@@ -145,7 +146,7 @@ const RegisterPage = () => {
                 <input
                   id="terms"
                   type="checkbox"
-                  className="mt-1 h-5 w-5 rounded border-slate-300 text-indigo-900 focus:ring-indigo-900"
+                  className=" h-5 w-5 rounded border-slate-300 text-indigo-900 focus:ring-indigo-900"
                 />
 
                 <label
@@ -182,12 +183,12 @@ const RegisterPage = () => {
             <div className="mt-8 border-t border-slate-200 pt-8 text-center">
               <p className="text-slate-500">
                 Already have an account?
-                <a
-                  href="#"
+                <Link
+                  href="/login"
                   className="ml-1 font-bold text-indigo-900 hover:underline"
                 >
                   Login
-                </a>
+                </Link>
               </p>
             </div>
           </div>

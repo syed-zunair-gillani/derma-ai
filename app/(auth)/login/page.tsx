@@ -6,6 +6,7 @@ import {
     ShieldCheck,
     Apple,
 } from "lucide-react";
+import Link from "next/link";
 
 const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +14,7 @@ const LoginPage = () => {
     return (
         <div className="min-h-screen flex flex-col bg-[#f7f9fb] text-[#191c1e]">
             {/* Main */}
-            <main className="flex flex-1 items-center justify-center px-6 py-12">
+            <main className="flex flex-1 items-center justify-center px-6 pt-28 pb-12">
                 <div className="w-full max-w-md">
                     {/* Card */}
                     <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-[0_4px_20px_rgba(0,6,102,0.04)] md:p-10">
@@ -57,12 +58,12 @@ const LoginPage = () => {
                                         Password
                                     </label>
 
-                                    <a
-                                        href="#"
+                                    <Link
+                                        href="/forgot-password"
                                         className="text-sm font-semibold text-indigo-700 hover:underline"
                                     >
                                         Forgot Password?
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 <div className="relative">
@@ -136,12 +137,12 @@ const LoginPage = () => {
                         <div className="mt-10 text-center">
                             <p className="text-slate-500">
                                 Don't have an account?{" "}
-                                <a
-                                    href="#"
+                                <Link
+                                    href="/register"
                                     className="font-semibold text-indigo-700 hover:underline"
                                 >
                                     Sign Up
-                                </a>
+                                </Link>
                             </p>
                         </div>
                     </div>
