@@ -22,7 +22,7 @@ export default function DermAIHistoryPage() {
                 {/* Main Content */}
                 <main className="flex-1 px-6 pt-24 pb-12 w-full">
                     {isNewScan ? (
-                        <div className="space-y-8 mt-10">
+                        <div className="space-y-8 lg:mt-2">
                             <SkinAnalysisUpload />
                         </div>
                     ) : (
