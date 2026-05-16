@@ -38,7 +38,6 @@ export default function DermAIHistoryPage() {
                     ) : (
                         <div className="space-y-12  max-w-7xl mx-auto">
                             <DetectionResult />
-                            <BentoGrid />
                             <ProductsSection />
                         </div>
                     )}
