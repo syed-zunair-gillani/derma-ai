@@ -1,7 +1,15 @@
+"use client";
 import Link from 'next/link';
 import { Send } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname === '/scan') {
+    return null;
+  }
+
   return (
     <footer className="bg-white pt-16 pb-8 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">

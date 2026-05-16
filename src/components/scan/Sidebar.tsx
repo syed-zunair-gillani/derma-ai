@@ -32,13 +32,13 @@ export default function Sidebar() {
                 </h3>
             </div>
 
-            <div className="overflow-y-auto flex-1 p-4 space-y-3">
+            <div className="overflow-y-auto flex-1 p-4 space-y-1">
                 {historyItems.map((item, index) => (
                     <div
                         key={index}
-                        className={`p-3 rounded-xl border cursor-pointer transition-all ${item.active
-                                ? "bg-indigo-50 border-indigo-200"
-                                : "hover:bg-slate-50 border-transparent hover:border-slate-200"
+                        className={`p-3 py-2 rounded-xl border cursor-pointer transition-all ${item.active
+                            ? "bg-indigo-50 border-indigo-200"
+                            : "hover:bg-slate-50 border-transparent hover:border-slate-200"
                             }`}
                     >
                         <div className="flex gap-3">
@@ -53,8 +53,8 @@ export default function Sidebar() {
                             <div className="flex flex-col justify-center min-w-0">
                                 <span
                                     className={`text-sm truncate ${item.active
-                                            ? "text-indigo-700 font-bold"
-                                            : "text-slate-700 font-medium"
+                                        ? "text-indigo-700 font-bold"
+                                        : "text-slate-700 font-medium"
                                         }`}
                                 >
                                     {item.title}
@@ -67,12 +67,12 @@ export default function Sidebar() {
                         </div>
                     </div>
                 ))}
+            </div>
 
-                <div className="pt-8 text-center">
-                    <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold">
-                        End of history
-                    </p>
-                </div>
+            <div className="p-4 border-t border-slate-100 bg-white mt-auto">
+                <button className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    <span>+ New Scan</span>
+                </button>
             </div>
         </aside>
     );
