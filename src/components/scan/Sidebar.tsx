@@ -23,7 +23,12 @@ const historyItems = [
 const imageUrl =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuD1DYnBxcNlQJsJFg76E7bXFfvuqNBi4ea8JSXqh8sA754d5xHNoakhpP49C8Bdkue22xgSQ5Mi1W1nN2O8tZ3Ci13zh9CcOsxth4zu5WxScNQ3Mls9cJnPvdmKCuxMImfiH7WNholjqEt_uLuadBsmVkJnqlOpRLXaDdCQnqesB5KKOIvHtZxJwdhdiyrW0nST4LjtGwv-xK1MaMhDpkZL47SRaGrKsH_qDa8bfmXH2jiwA1eEq4SLkMm0txvcuuVjK9lJ0R2M7pc";
 
-export default function Sidebar() {
+interface SidebarProps {
+    onNewScanClick?: () => void;
+    onHistoryClick?: (index: number) => void;
+}
+
+export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps) {
     return (
         <aside className="hidden lg:flex flex-col w-80 border-r border-slate-200 bg-white sticky top-0 h-screen overflow-hidden">
             <div className="p-6 border-b border-slate-100 bg-slate-50/30">
@@ -36,6 +41,7 @@ export default function Sidebar() {
                 {historyItems.map((item, index) => (
                     <div
                         key={index}
+                        onClick={() => onHistoryClick && onHistoryClick(index)}
                         className={`p-3 py-2 rounded-xl border cursor-pointer transition-all ${item.active
                             ? "bg-indigo-50 border-indigo-200"
                             : "hover:bg-slate-50 border-transparent hover:border-slate-200"
@@ -70,7 +76,10 @@ export default function Sidebar() {
             </div>
 
             <div className="p-4 border-t border-slate-100 bg-white mt-auto">
-                <button className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 shadow-sm">
+                <button 
+                    onClick={onNewScanClick}
+                    className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                >
                     <span>+ New Scan</span>
                 </button>
             </div>
