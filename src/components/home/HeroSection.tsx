@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function HeroSection() {
   return (
-    <section className="relative pt-16 pb-24 md:pt-24 md:pb-32 overflow-hidden bg-gradient-to-b from-[#f8fafe] to-white">
+    <section className="relative pt-24 pb-24 md:pt-24 md:pb-32 overflow-hidden bg-gradient-to-b from-[#f8fafe] to-white">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
         <div className="max-w-2xl">
