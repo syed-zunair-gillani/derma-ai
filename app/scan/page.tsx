@@ -36,7 +36,7 @@ export default function DermAIHistoryPage() {
                             <SkinAnalysisUpload onAnalysisComplete={() => setHaveResult(true)} />
                         </div>
                     ) : (
-                        <div className="space-y-12">
+                        <div className="space-y-12  max-w-7xl mx-auto">
                             <DetectionResult />
                             <BentoGrid />
                             <ProductsSection />
