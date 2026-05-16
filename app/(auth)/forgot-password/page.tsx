@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const ResetPassword = () => {
@@ -74,8 +75,8 @@ const ResetPassword = () => {
 
           {/* Back */}
           <div className="mt-8 pt-6 border-t border-slate-200">
-            <a
-              href="#"
+            <Link
+              href="/login"
               className="inline-flex items-center gap-2 text-indigo-900 font-semibold hover:underline hover:opacity-80 transition-all"
             >
               <span className="material-symbols-outlined text-[18px]">
@@ -83,7 +84,7 @@ const ResetPassword = () => {
               </span>
 
               Back to Login
-            </a>
+            </Link>
           </div>
         </section>
 

@@ -8,7 +8,7 @@ export default function Header() {
         <div className="w-8 h-8 bg-blue-600 rounded-md flex items-center justify-center">
           <span className="text-white font-bold text-lg">D</span>
         </div>
-        <span className="font-bold text-xl text-gray-900 tracking-tight">DermAI</span>
+        <Link href="/" className="font-bold text-xl text-gray-900 tracking-tight">Dermic</Link>
       </div>
 
       {/* Navigation */}
