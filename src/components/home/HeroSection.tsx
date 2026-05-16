@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
 
 export default function HeroSection() {
   return (
@@ -23,9 +24,9 @@ export default function HeroSection() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#0b103e] hover:bg-blue-900 text-white font-medium py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            <Link href={"/scan"}  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#0b103e] hover:bg-blue-900 text-white font-medium py-3.5 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
               Start Your Scan <ArrowRight size={18} />
-            </button>
+            </Link>
             <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-medium py-3 px-8 rounded-xl transition-all">
               How it Works
             </button>
