@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useRef, useState } from "react";
-import { toPng } from "html-to-image";
-import jsPDF from "jspdf";
+import React, { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 const imageUrl =
     "https://lh3.googleusercontent.com/aida-public/AB6AXuD1DYnBxcNlQJsJFg76E7bXFfvuqNBi4ea8JSXqh8sA754d5xHNoakhpP49C8Bdkue22xgSQ5Mi1W1nN2O8tZ3Ci13zh9CcOsxth4zu5WxScNQ3Mls9cJnPvdmKCuxMImfiH7WNholjqEt_uLuadBsmVkJnqlOpRLXaDdCQnqesB5KKOIvHtZxJwdhdiyrW0nST4LjtGwv-xK1MaMhDpkZL47SRaGrKsH_qDa8bfmXH2jiwA1eEq4SLkMm0txvcuuVjK9lJ0R2M7pc";
@@ -179,41 +178,12 @@ function CareChecklistCard() {
 
 export default function DetectionResult() {
     const printRef = useRef<HTMLDivElement>(null);
-    const [isDownloading, setIsDownloading] = useState(false);
 
-    const handleDownloadPdf = async () => {
-        const element = printRef.current;
-        if (!element) return;
-
-        setIsDownloading(true);
-        try {
-            // Use html-to-image which handles modern CSS like 'lab' colors better
-            const dataUrl = await toPng(element, {
-                quality: 1,
-                pixelRatio: 2,
-                backgroundColor: '#f8fafc',
-            });
-
-            const pdf = new jsPDF("p", "mm", "a4");
-
-            // Load image to get dimensions
-            const img = new Image();
-            img.src = dataUrl;
-            await new Promise((resolve) => {
-                img.onload = resolve;
-            });
-
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (img.height * pdfWidth) / img.width;
-
-            pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
-            pdf.save("derma-ai-analysis-result.pdf");
-        } catch (error) {
-            console.error("Error generating PDF", error);
-        } finally {
-            setIsDownloading(false);
-        }
-    };
+    const handleDownloadPdf = useReactToPrint({
+        contentRef: printRef,
+        documentTitle: "derma-ai-analysis-result",
+        bodyClass: "bg-slate-50 p-8", // Adds background and padding to the printed document
+    });
 
     return (
         <div className="flex flex-col gap-6 w-full">
@@ -228,21 +198,11 @@ export default function DetectionResult() {
                     Write your review
                 </button>
                 <button 
-                    onClick={handleDownloadPdf}
-                    disabled={isDownloading}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white font-bold text-sm rounded-xl hover:bg-indigo-700 transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+                    onClick={() => handleDownloadPdf()}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white font-bold text-sm rounded-xl hover:bg-indigo-700 transition-colors shadow-sm"
                 >
-                    {isDownloading ? (
-                        <>
-                            <span className="material-symbols-outlined text-[20px] animate-spin">sync</span>
-                            Downloading...
-                        </>
-                    ) : (
-                        <>
-                            <span className="material-symbols-outlined text-[20px]">download</span>
-                            Download PDF
-                        </>
-                    )}
+                    <span className="material-symbols-outlined text-[20px]">download</span>
+                    Download PDF
                 </button>
             </div>
 
