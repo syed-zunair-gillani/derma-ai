@@ -10,7 +10,7 @@ import SkinAnalysisHeader from "@/src/components/scan/SkinAnalysisHeader";
 
 export default function DermAIHistoryPage() {
     const [isNewScan, setIsNewScan] = useState(true);
-    const [isAuthenticated, setIsAuthanticated] = useState(false);
+    const [isAuthenticated, setIsAuthanticated] = useState(true);
 
     return (
         <div className="bg-slate-50 text-slate-900 min-h-screen">
