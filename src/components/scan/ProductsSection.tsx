@@ -29,7 +29,7 @@ export default function ProductsSection() {
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
                         <img
                             src={productImage}
