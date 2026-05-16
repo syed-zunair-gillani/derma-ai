@@ -8,11 +8,11 @@ const imageUrl =
 
 function SkinConditionCard() {
     return (
-        <div className="bg-white rounded-xl p-5 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 h-full">
-            <div className="flex flex-col md:flex-row gap-6 items-stretch h-full">
+        <div className="bg-white rounded-xl p-5 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 h-full print:shadow-none">
+            <div className="flex flex-col md:flex-row print:flex-row gap-6 items-stretch h-full">
                 {/* Image Section */}
-                <div className="w-full md:w-[35%] flex-shrink-0">
-                    <div className="relative rounded-xl overflow-hidden aspect-[4/3] md:aspect-square h-full w-full">
+                <div className="w-full md:w-[35%] print:w-[35%] flex-shrink-0">
+                    <div className="relative rounded-xl overflow-hidden aspect-[4/3] md:aspect-square print:aspect-square h-full w-full">
                         <img
                             src={imageUrl}
                             alt="Skin Area"
@@ -22,7 +22,7 @@ function SkinConditionCard() {
                 </div>
 
                 {/* Content Section */}
-                <div className="w-full md:w-[65%] flex flex-col justify-between py-1">
+                <div className="w-full md:w-[65%] print:w-[65%] flex flex-col justify-between py-1">
                     <div>
                         {/* Header Row */}
                         <div className="flex justify-between items-start mb-3">
@@ -51,7 +51,7 @@ function SkinConditionCard() {
                         </div>
 
                         {/* Progress Bar */}
-                        <div className="w-full bg-slate-100 rounded-full h-2 mb-5 overflow-hidden flex">
+                        <div className="w-full bg-slate-100 rounded-full h-2 mb-5 overflow-hidden flex print:bg-slate-200">
                             <div className="bg-[#0f766e] h-2 rounded-full" style={{ width: "94%" }}></div>
                         </div>
 
@@ -64,7 +64,7 @@ function SkinConditionCard() {
                     </div>
 
                     {/* Bottom Cards */}
-                    <div className="flex gap-4 w-full">
+                    <div className="flex gap-4 w-full print:flex-row">
                         <div className="bg-slate-50/80 border border-slate-100 rounded-xl p-3.5 flex-1">
                             <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
                                 Primary Causes
@@ -131,7 +131,7 @@ function RoutineCard({ type }: { type: 'morning' | 'night' }) {
         : ["Double Cleanse (Oil + Water)", "2% Salicylic Acid Treatment", "Ceramide Rich Moisturizer"];
 
     return (
-        <div className="bg-white rounded-xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 h-full">
+        <div className="bg-white rounded-xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 h-full print:shadow-none">
             <div className="flex items-center gap-2 mb-6">
                 <span className="material-symbols-outlined text-blue-600 text-[20px]">{icon}</span>
                 <h3 className="text-sm font-bold text-blue-600 uppercase tracking-widest">{title}</h3>
@@ -187,6 +187,17 @@ export default function DetectionResult() {
 
     return (
         <div className="flex flex-col gap-6 w-full">
+            <style>
+                {`
+                    @media print {
+                        body {
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
+                        }
+                    }
+                `}
+            </style>
+
             {/* Action Bar */}
             <div className="flex flex-wrap justify-end items-center gap-3 w-full">
                 <button className="flex items-center gap-2 px-4 py-2.5 bg-white text-indigo-600 font-bold text-sm rounded-xl border border-indigo-100 hover:bg-indigo-50 transition-colors shadow-sm">
@@ -209,17 +220,17 @@ export default function DetectionResult() {
             {/* Printable Content */}
             <div ref={printRef} className="flex flex-col gap-6 w-full p-2 sm:p-0">
                 {/* Top Row */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2">
+                <div className="grid grid-cols-1 lg:grid-cols-3 print:grid-cols-3 gap-6">
+                    <div className="lg:col-span-2 print:col-span-2">
                         <SkinConditionCard />
                     </div>
-                    <div className="lg:col-span-1">
+                    <div className="lg:col-span-1 print:col-span-1">
                         <LifestyleBalanceCard />
                     </div>
                 </div>
 
                 {/* Bottom Row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-6">
                     <RoutineCard type="morning" />
                     <RoutineCard type="night" />
                     <CareChecklistCard />
