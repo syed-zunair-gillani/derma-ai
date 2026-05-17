@@ -31,7 +31,7 @@ export default function Header() {
 
       {/* Navigation */}
       <nav className="hidden md:flex items-center gap-8">
-        <Link href="#" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">How it Works</Link>
+        <Link href="/how-it-works" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">How it Works</Link>
         <Link href="#" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Clinical Accuracy</Link>
         <Link href="/pricing" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Pricing</Link>
         <Link href="#" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">For Doctors</Link>
