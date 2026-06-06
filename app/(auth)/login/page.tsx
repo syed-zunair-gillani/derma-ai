@@ -1,15 +1,42 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, type FormEvent } from "react";
 import {
-    Menu,
     Eye,
+    EyeOff,
     ShieldCheck,
     Apple,
 } from "lucide-react";
 import Link from "next/link";
+import { login } from "@/src/services/auth";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+    const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setError(null);
+        setLoading(true);
+
+        try {
+            const res = await login({ email, password });
+            if (res.access_token) {
+                localStorage.setItem("token", res.access_token);
+            }
+            router.push("/");
+        } catch (err: unknown) {
+            const message =
+                err instanceof Error ? err.message : "Invalid email or password.";
+            setError(message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen flex flex-col bg-[#f7f9fb] text-[#191c1e]">
@@ -30,7 +57,7 @@ const LoginPage = () => {
                         </div>
 
                         {/* Form */}
-                        <form className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Email */}
                             <div>
                                 <label
@@ -44,6 +71,9 @@ const LoginPage = () => {
                                     id="email"
                                     type="email"
                                     placeholder="name@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
                                     className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-indigo-700 focus:ring-2 focus:ring-indigo-100"
                                 />
                             </div>
@@ -71,6 +101,9 @@ const LoginPage = () => {
                                         id="password"
                                         type={showPassword ? "text" : "password"}
                                         placeholder="••••••••"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
                                         className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-indigo-700 focus:ring-2 focus:ring-indigo-100"
                                     />
 
@@ -81,17 +114,25 @@ const LoginPage = () => {
                                         }
                                         className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-indigo-700"
                                     >
-                                        <Eye size={20} />
+                                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                     </button>
                                 </div>
                             </div>
 
+                            {/* Error */}
+                            {error && (
+                                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                                    {error}
+                                </p>
+                            )}
+
                             {/* Submit */}
                             <button
                                 type="submit"
-                                className="w-full rounded-xl bg-indigo-900 py-4 text-sm font-semibold text-white shadow-md transition hover:bg-indigo-800 hover:shadow-lg active:scale-[0.98]"
+                                disabled={loading}
+                                className="w-full rounded-xl bg-indigo-900 py-4 text-sm font-semibold text-white shadow-md transition hover:bg-indigo-800 hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
                             >
-                                Sign In
+                                {loading ? "Signing In..." : "Sign In"}
                             </button>
                         </form>
 
