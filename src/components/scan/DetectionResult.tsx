@@ -3,11 +3,13 @@
 import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import ReviewModal from "./ReviewModal";
+import { type ScanResponse } from "@/src/services/scans";
 
-const imageUrl =
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuD1DYnBxcNlQJsJFg76E7bXFfvuqNBi4ea8JSXqh8sA754d5xHNoakhpP49C8Bdkue22xgSQ5Mi1W1nN2O8tZ3Ci13zh9CcOsxth4zu5WxScNQ3Mls9cJnPvdmKCuxMImfiH7WNholjqEt_uLuadBsmVkJnqlOpRLXaDdCQnqesB5KKOIvHtZxJwdhdiyrW0nST4LjtGwv-xK1MaMhDpkZL47SRaGrKsH_qDa8bfmXH2jiwA1eEq4SLkMm0txvcuuVjK9lJ0R2M7pc";
+function SkinConditionCard({ data }: { data: ScanResponse }) {
+    const primary = data.primary_detection;
+    const topResult = data.results.find((r) => r.disease === primary.disease);
+    const symptoms = topResult?.common_symptoms ?? [];
 
-function SkinConditionCard() {
     return (
         <div className="bg-white rounded-xl p-5 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 h-full print:shadow-none">
             <div className="flex flex-col md:flex-row print:flex-row gap-6 items-stretch h-full">
@@ -15,7 +17,7 @@ function SkinConditionCard() {
                 <div className="w-full md:w-[35%] print:w-[35%] flex-shrink-0 h-full lg:h-[200px] xl:h-full">
                     <div className="relative rounded-xl overflow-hidden aspect-[4/3] md:aspect-square print:aspect-square h-full w-full">
                         <img
-                            src={imageUrl}
+                            src={data.image_url}
                             alt="Skin Area"
                             className="w-full h-full object-cover"
                         />
@@ -30,20 +32,20 @@ function SkinConditionCard() {
                             <div>
                                 <div className="flex items-center gap-3 mb-1">
                                     <h2 className="text-[26px] font-medium text-slate-800">
-                                        Hormonal Acne
+                                        {primary.disease.replace(/_/g, " ")}
                                     </h2>
                                     <span className="bg-blue-50 text-blue-600 px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide uppercase">
-                                        Mild
+                                        {primary.severity}
                                     </span>
                                 </div>
                                 <p className="text-slate-500 text-sm">
-                                    Detected in T-Zone and lower jawline
+                                    {topResult?.scientific_name ?? primary.disease}
                                 </p>
                             </div>
 
                             <div className="text-right">
                                 <div className="text-3xl font-bold text-[#0f766e]">
-                                    94%
+                                    {primary.confidence.toFixed(1)}%
                                 </div>
                                 <div className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mt-0.5">
                                     Confidence
@@ -53,33 +55,35 @@ function SkinConditionCard() {
 
                         {/* Progress Bar */}
                         <div className="w-full bg-slate-100 rounded-full h-2 mb-5 overflow-hidden flex print:bg-slate-200">
-                            <div className="bg-[#0f766e] h-2 rounded-full" style={{ width: "94%" }}></div>
+                            <div className="bg-[#0f766e] h-2 rounded-full" style={{ width: `${primary.confidence}%` }}></div>
                         </div>
 
                         {/* Description */}
-                        <p className="text-slate-500 text-[15px] leading-relaxed mb-6 pr-4">
-                            A common condition characterized by blackheads, whiteheads,
-                            and inflamed spots. Typically caused by fluctuations in oil
-                            production and bacterial activity.
-                        </p>
+                        {topResult?.description && (
+                            <p className="text-slate-500 text-[15px] leading-relaxed mb-6 pr-4">
+                                {topResult.description}
+                            </p>
+                        )}
                     </div>
 
                     {/* Bottom Cards */}
                     <div className="flex flex-col sm:flex-row gap-4 w-full print:flex-row">
+                        {symptoms.length > 0 && (
+                            <div className="bg-slate-50/80 border border-slate-100 rounded-xl p-3.5 flex-1">
+                                <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                                    Common Symptoms
+                                </h4>
+                                <p className="text-sm font-semibold text-slate-700">
+                                    {symptoms.join(", ")}
+                                </p>
+                            </div>
+                        )}
                         <div className="bg-slate-50/80 border border-slate-100 rounded-xl p-3.5 flex-1">
                             <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
-                                Primary Causes
+                                Urgency
                             </h4>
                             <p className="text-sm font-semibold text-slate-700">
-                                Excess Sebum, Hormones
-                            </p>
-                        </div>
-                        <div className="bg-slate-50/80 border border-slate-100 rounded-xl p-3.5 flex-1">
-                            <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
-                                Next Action
-                            </h4>
-                            <p className="text-sm font-semibold text-slate-700">
-                                Topical Treatment
+                                {primary.urgency_level.toUpperCase()}
                             </p>
                         </div>
                     </div>
@@ -177,7 +181,11 @@ function CareChecklistCard() {
     );
 }
 
-export default function DetectionResult() {
+interface DetectionResultProps {
+    data: ScanResponse;
+}
+
+export default function DetectionResult({ data }: DetectionResultProps) {
     const printRef = useRef<HTMLDivElement>(null);
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
@@ -233,12 +241,35 @@ export default function DetectionResult() {
                 {/* Top Row */}
                 <div className="flex flex-col lg:flex-row print:flex-row gap-6 w-full">
                     <div className="w-full lg:w-2/3 print:w-2/3">
-                        <SkinConditionCard />
+                        <SkinConditionCard data={data} />
                     </div>
                     <div className="w-full lg:w-1/3 print:w-1/3">
                         <LifestyleBalanceCard />
                     </div>
                 </div>
+
+                {/* All Detections */}
+                {data.results.length > 1 && (
+                    <div className="bg-white rounded-xl p-5 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100">
+                        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">
+                            All Detections
+                        </h3>
+                        <div className="space-y-3">
+                            {data.results.map((r, i) => (
+                                <div key={i} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
+                                    <div>
+                                        <p className="font-semibold text-slate-800">{r.disease.replace(/_/g, " ")}</p>
+                                        <p className="text-xs text-slate-500">{r.scientific_name}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-sm font-bold text-[#0f766e]">{r.confidence.toFixed(1)}%</p>
+                                        <p className="text-[10px] uppercase tracking-wider text-slate-400">{r.severity}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* Bottom Row */}
                 <div className="flex flex-col md:flex-row print:flex-row gap-6 w-full">
@@ -252,6 +283,11 @@ export default function DetectionResult() {
                         <CareChecklistCard />
                     </div>
                 </div>
+
+                {/* Disclaimer */}
+                <p className="text-xs text-slate-400 text-center italic">
+                    {data.disclaimer}
+                </p>
             </div>
         </div>
     );

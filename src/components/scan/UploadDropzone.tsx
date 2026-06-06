@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 
 interface UploadDropzoneProps {
-  onUpload: (images: string[]) => void;
+  onUpload: (images: string[], files: File[]) => void;
   fullWidth?: boolean;
 }
 
@@ -10,8 +10,9 @@ export default function UploadDropzone({ onUpload, fullWidth }: UploadDropzonePr
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const newImages = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
-      onUpload(newImages);
+      const files = Array.from(e.target.files);
+      const blobUrls = files.map((file) => URL.createObjectURL(file));
+      onUpload(blobUrls, files);
     }
   };
 

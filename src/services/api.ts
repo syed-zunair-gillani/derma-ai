@@ -35,4 +35,29 @@ async function request<T>(
   return res.json();
 }
 
-export { request, ApiError };
+async function uploadFile<T>(
+  endpoint: string,
+  formData: FormData
+): Promise<T> {
+  const url = `${BASE_URL}${endpoint}`;
+
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new ApiError(
+      body?.detail || body?.message || `Request failed with status ${res.status}`,
+      res.status
+    );
+  }
+
+  return res.json();
+}
+
+export { request, ApiError, uploadFile };

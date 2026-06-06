@@ -7,11 +7,13 @@ import BentoGrid from "@/src/components/scan/BentoGrid";
 import ProductsSection from "@/src/components/scan/ProductsSection";
 import SkinAnalysisUpload from "@/src/components/scan/SkinAnalysisUpload";
 import SkinAnalysisHeader from "@/src/components/scan/SkinAnalysisHeader";
+import { type ScanResponse } from "@/src/services/scans";
 
 export default function DermAIHistoryPage() {
     const [isNewScan, setIsNewScan] = useState(true);
     const [isAuthenticated, setIsAuthanticated] = useState(true);
     const [haveResult, setHaveResult] = useState(false);
+    const [scanData, setScanData] = useState<ScanResponse | null>(null);
 
     return (
         <div className="bg-slate-50 text-slate-900 min-h-screen">
@@ -21,6 +23,7 @@ export default function DermAIHistoryPage() {
                         onNewScanClick={() => {
                             setIsNewScan(true);
                             setHaveResult(false);
+                            setScanData(null);
                         }}
                         onHistoryClick={() => setIsNewScan(false)}
                     />
@@ -33,11 +36,14 @@ export default function DermAIHistoryPage() {
                             {
                                 !isAuthenticated && <SkinAnalysisHeader />
                             }
-                            <SkinAnalysisUpload onAnalysisComplete={() => setHaveResult(true)} />
+                            <SkinAnalysisUpload onAnalysisComplete={(data) => {
+                                setScanData(data);
+                                setHaveResult(true);
+                            }} />
                         </div>
                     ) : (
                         <div className="space-y-12  max-w-7xl mx-auto">
-                            <DetectionResult />
+                            {scanData && <DetectionResult data={scanData} />}
                             <ProductsSection />
                         </div>
                     )}
