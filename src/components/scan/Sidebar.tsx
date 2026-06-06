@@ -1,38 +1,36 @@
 'use client'
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSidebar } from "@/src/context/SidebarContext";
-
-const historyItems = [
-    {
-        title: "Seborrheic Keratosis",
-        date: "Today, 10:24 AM",
-        active: true,
-    },
-    {
-        title: "Actinic Keratosis",
-        date: "Nov 12, 2023",
-    },
-    {
-        title: "Common Nevus",
-        date: "Oct 28, 2023",
-    },
-    {
-        title: "Basal Cell Carcinoma",
-        date: "Oct 15, 2023",
-    },
-];
-
-const imageUrl =
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuD1DYnBxcNlQJsJFg76E7bXFfvuqNBi4ea8JSXqh8sA754d5xHNoakhpP49C8Bdkue22xgSQ5Mi1W1nN2O8tZ3Ci13zh9CcOsxth4zu5WxScNQ3Mls9cJnPvdmKCuxMImfiH7WNholjqEt_uLuadBsmVkJnqlOpRLXaDdCQnqesB5KKOIvHtZxJwdhdiyrW0nST4LjtGwv-xK1MaMhDpkZL47SRaGrKsH_qDa8bfmXH2jiwA1eEq4SLkMm0txvcuuVjK9lJ0R2M7pc";
+import { getScans, type ScanListItem } from "@/src/services/scans";
 
 interface SidebarProps {
     onNewScanClick?: () => void;
-    onHistoryClick?: (index: number) => void;
+    onHistoryClick?: (scanId: string) => void;
 }
 
 export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps) {
     const { isOpen, setIsOpen } = useSidebar();
+    const [scans, setScans] = useState<ScanListItem[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const fetchScans = async () => {
+            setLoading(true);
+            try {
+                const data = await getScans();
+                setScans(data);
+            } catch {
+                setScans([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchScans();
+    }, [isOpen]);
 
     return (
         <>
@@ -66,41 +64,41 @@ export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps
                     </div>
 
                     <div className="overflow-y-auto flex-1 p-4 space-y-1">
-                        {historyItems.map((item, index) => (
-                            <div
-                                key={index}
-                                onClick={() => onHistoryClick && onHistoryClick(index)}
-                                className={`p-3 py-2 rounded-xl border cursor-pointer transition-all ${item.active
-                                    ? "bg-indigo-50 border-indigo-200"
-                                    : "hover:bg-slate-50 border-transparent hover:border-slate-200"
-                                    }`}
-                            >
-                                <div className="flex gap-3">
-                                    <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
-                                        <img
-                                            src={imageUrl}
-                                            alt={item.title}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </div>
+                        {loading ? (
+                            <div className="flex items-center justify-center py-8">
+                                <span className="material-symbols-outlined animate-spin text-slate-400">sync</span>
+                            </div>
+                        ) : scans.length === 0 ? (
+                            <p className="text-sm text-slate-400 text-center py-8">No scans yet</p>
+                        ) : (
+                            scans.map((scan) => (
+                                <div
+                                    key={scan.scan_id}
+                                    onClick={() => onHistoryClick && onHistoryClick(scan.scan_id)}
+                                    className="p-3 py-2 rounded-xl border cursor-pointer transition-all hover:bg-slate-50 border-transparent hover:border-slate-200"
+                                >
+                                    <div className="flex gap-3">
+                                        <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+                                            <img
+                                                src={scan.image_url}
+                                                alt={scan.primary_detection.disease}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
 
-                                    <div className="flex flex-col justify-center min-w-0">
-                                        <span
-                                            className={`text-sm truncate ${item.active
-                                                ? "text-indigo-700 font-bold"
-                                                : "text-slate-700 font-medium"
-                                                }`}
-                                        >
-                                            {item.title}
-                                        </span>
+                                        <div className="flex flex-col justify-center min-w-0">
+                                            <span className="text-sm truncate text-slate-700 font-medium">
+                                                {scan.primary_detection.disease.replace(/_/g, " ")}
+                                            </span>
 
-                                        <span className="text-slate-400 text-[11px]">
-                                            {item.date}
-                                        </span>
+                                            <span className="text-slate-400 text-[11px]">
+                                                {scan.primary_detection.severity} &middot; {scan.primary_detection.confidence.toFixed(1)}%
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))
+                        )}
                     </div>
 
                     <div className="p-4 border-t border-slate-100 bg-white mt-auto">

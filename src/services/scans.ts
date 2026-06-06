@@ -1,4 +1,4 @@
-import { uploadFile } from "./api";
+import { request, uploadFile } from "./api";
 
 interface ScanResult {
   disease: string;
@@ -32,4 +32,18 @@ export async function createScan(files: File[]): Promise<ScanResponse> {
   files.forEach((file) => formData.append("image", file));
 
   return uploadFile<ScanResponse>("/scans", formData);
+}
+
+export type ScanListItem = Pick<
+  ScanResponse,
+  "scan_id" | "image_url" | "primary_detection"
+>;
+
+export async function getScans(): Promise<ScanListItem[]> {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+  return request<ScanListItem[]>("/scans", {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
 }
