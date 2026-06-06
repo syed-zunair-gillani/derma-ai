@@ -1,8 +1,6 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, type FormEvent } from "react";
 import {
-  Menu,
-  Biohazard,
   ShieldPlus,
   User,
   Mail,
@@ -11,9 +9,44 @@ import {
   EyeOff,
 } from "lucide-react";
 import Link from "next/link";
+import { signup } from "@/src/services/auth";
 
 const RegisterPage = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!agreed) {
+      setError("You must agree to the Terms and Privacy Policy.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await signup({
+        email,
+        password,
+        full_name: name,
+        medical_history: {},
+      });
+      alert("Account created successfully! Please check your email.");
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Something went wrong.";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden bg-[#f7f9fb] text-[#191c1e]">
@@ -54,7 +87,7 @@ const RegisterPage = () => {
             </div>
 
             {/* Form */}
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name */}
               <div className="space-y-2">
                 <label
@@ -74,6 +107,9 @@ const RegisterPage = () => {
                     id="name"
                     type="text"
                     placeholder="Dr. John Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
                     className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 outline-none transition focus:border-indigo-900 focus:ring-2 focus:ring-indigo-100"
                   />
                 </div>
@@ -98,6 +134,9 @@ const RegisterPage = () => {
                     id="email"
                     type="email"
                     placeholder="john@hospital.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                     className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 outline-none transition focus:border-indigo-900 focus:ring-2 focus:ring-indigo-100"
                   />
                 </div>
@@ -122,6 +161,10 @@ const RegisterPage = () => {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={8}
                     className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-12 outline-none transition focus:border-indigo-900 focus:ring-2 focus:ring-indigo-100"
                   />
 
@@ -146,6 +189,8 @@ const RegisterPage = () => {
                 <input
                   id="terms"
                   type="checkbox"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
                   className=" h-5 w-5 rounded border-slate-300 text-indigo-900 focus:ring-indigo-900"
                 />
 
@@ -170,12 +215,20 @@ const RegisterPage = () => {
                 </label>
               </div>
 
+              {/* Error */}
+              {error && (
+                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {error}
+                </p>
+              )}
+
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full rounded-xl bg-indigo-900 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-lg shadow-indigo-900/10 transition hover:bg-indigo-800 active:scale-[0.98]"
+                disabled={loading}
+                className="w-full rounded-xl bg-indigo-900 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-lg shadow-indigo-900/10 transition hover:bg-indigo-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Create Account
+                {loading ? "Creating Account..." : "Create Account"}
               </button>
             </form>
 
