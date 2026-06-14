@@ -5,11 +5,12 @@ import { useSidebar } from "@/src/context/SidebarContext";
 import { getScans, type ScanListItem } from "@/src/services/scans";
 
 interface SidebarProps {
+    extraScans?: ScanListItem[];
     onNewScanClick?: () => void;
     onHistoryClick?: (scanId: string) => void;
 }
 
-export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps) {
+export default function Sidebar({ extraScans = [], onNewScanClick, onHistoryClick }: SidebarProps) {
     const { isOpen, setIsOpen } = useSidebar();
     const [scans, setScans] = useState<ScanListItem[]>([]);
     const [loading, setLoading] = useState(false);
@@ -68,10 +69,10 @@ export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps
                             <div className="flex items-center justify-center py-8">
                                 <span className="material-symbols-outlined animate-spin text-slate-400">sync</span>
                             </div>
-                        ) : scans?.length === 0 ? (
+                        ) : extraScans.length === 0 && scans.length === 0 ? (
                             <p className="text-sm text-slate-400 text-center py-8">No scans yet</p>
                         ) : (
-                            scans?.map((scan) => (
+                            [...extraScans, ...scans].map((scan) => (
                                 <div
                                     key={scan.scan_id}
                                     onClick={() => onHistoryClick && onHistoryClick(scan.scan_id)}
@@ -81,7 +82,7 @@ export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps
                                         <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
                                             <img
                                                 src={scan.image_url}
-                                                alt={scan.primary_detection.disease}
+                                                alt={scan.primary_detection.disease.charAt(0)}
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>

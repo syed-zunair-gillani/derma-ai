@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Sidebar from "@/src/components/scan/Sidebar";
 import DetectionResult from "@/src/components/scan/DetectionResult";
 import BentoGrid from "@/src/components/scan/BentoGrid";
 import ProductsSection from "@/src/components/scan/ProductsSection";
 import SkinAnalysisUpload from "@/src/components/scan/SkinAnalysisUpload";
 import SkinAnalysisHeader from "@/src/components/scan/SkinAnalysisHeader";
-import { type ScanResponse } from "@/src/services/scans";
+import { type ScanListItem, type ScanResponse } from "@/src/services/scans";
 
 function getToken(): string | null {
     if (typeof document === "undefined") return null;
@@ -15,14 +15,35 @@ function getToken(): string | null {
     return match ? match[1] : localStorage.getItem("token");
 }
 
+function toScanListItem(data: ScanResponse): ScanListItem {
+    return {
+        scan_id: data.scan_id,
+        image_url: data.image_url,
+        primary_detection: data.primary_detection,
+    };
+}
+
 export default function DermAIHistoryPage() {
     const [isNewScan, setIsNewScan] = useState(true);
     const [isAuthenticated, setIsAuthanticated] = useState(false);
     const [haveResult, setHaveResult] = useState(false);
     const [scanData, setScanData] = useState<ScanResponse | null>(null);
+    const [extraScans, setExtraScans] = useState<ScanListItem[]>([]);
 
     useEffect(() => {
         setIsAuthanticated(!!getToken());
+    }, []);
+
+    const handleNewScan = useCallback(() => {
+        setIsNewScan(true);
+        setHaveResult(false);
+        setScanData(null);
+    }, []);
+
+    const handleAnalysisComplete = useCallback((data: ScanResponse) => {
+        setScanData(data);
+        setHaveResult(true);
+        setExtraScans((prev) => [toScanListItem(data), ...prev]);
     }, []);
 
     return (
@@ -30,11 +51,8 @@ export default function DermAIHistoryPage() {
             <div className="flex mx-auto min-h-screen">
                 {
                     isAuthenticated && <Sidebar
-                        onNewScanClick={() => {
-                            setIsNewScan(true);
-                            setHaveResult(false);
-                            setScanData(null);
-                        }}
+                        extraScans={extraScans}
+                        onNewScanClick={handleNewScan}
                         onHistoryClick={() => setIsNewScan(false)}
                     />
                 }
@@ -46,10 +64,7 @@ export default function DermAIHistoryPage() {
                             {
                                 !isAuthenticated && <SkinAnalysisHeader />
                             }
-                            <SkinAnalysisUpload onAnalysisComplete={(data) => {
-                                setScanData(data);
-                                setHaveResult(true);
-                            }} />
+                            <SkinAnalysisUpload onAnalysisComplete={handleAnalysisComplete} />
                         </div>
                     ) : (
                         <div className="space-y-12  max-w-7xl mx-auto">
