@@ -29,7 +29,7 @@ export default function Header() {
     <header className="w-full flex items-center justify-between px-4 md:px-6 py-4 bg-white/80 backdrop-blur-md fixed top-0 z-50 border-b border-gray-100">
       <div className="flex items-center gap-2">
         {/* Toggle Button - Only shown on Scan Page when sidebar is hidden */}
-        {isScanPage && !isOpen && (
+        {!isOpen && (
           <button
             onClick={toggleSidebar}
             className="hover:bg-slate-100 rounded-lg transition-colors text-slate-500 hover:text-indigo-600 mr-1"
