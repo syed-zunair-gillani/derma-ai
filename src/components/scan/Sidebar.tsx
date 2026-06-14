@@ -1,39 +1,20 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSidebar } from "@/src/context/SidebarContext";
-import { getScans, type ScanListItem } from "@/src/services/scans";
-import Image from "next/image";
+import type { ScanListItem } from "@/src/services/scans";
 
 interface SidebarProps {
     extraScans?: ScanListItem[];
+    scans: ScanListItem[];
+    loading: boolean;
     onNewScanClick?: () => void;
     onHistoryClick?: (scanId: string) => void;
     activeScanId?: string | null
 }
 
-export default function Sidebar({ extraScans = [], onNewScanClick, onHistoryClick, activeScanId = null }: SidebarProps) {
+export default function Sidebar({ extraScans = [], scans, loading, onNewScanClick, onHistoryClick, activeScanId = null }: SidebarProps) {
     const { isOpen, setIsOpen } = useSidebar();
-    const [scans, setScans] = useState<ScanListItem[]>([]);
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (!isOpen) return;
-
-        const fetchScans = async () => {
-            setLoading(true);
-            try {
-                const data = await getScans();
-                setScans(Array.isArray(data) ? data : []);
-            } catch {
-                setScans([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchScans();
-    }, [isOpen]);
 
     return (
         <>
@@ -118,8 +99,6 @@ export default function Sidebar({ extraScans = [], onNewScanClick, onHistoryClic
                     </div>
                 </div>
             </aside>
-
-            {/* The sidebar is now toggled via the button in the Header */}
         </>
     );
 }
