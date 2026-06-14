@@ -27,6 +27,11 @@ const LoginPage = () => {
             const res = await login({ email, password });
             if (res.access_token) {
                 localStorage.setItem("token", res.access_token);
+                document.cookie = `token=${res.access_token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+                if (res.refresh_token) {
+                    localStorage.setItem("refresh_token", res.refresh_token);
+                    document.cookie = `refresh_token=${res.refresh_token}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;
+                }
             }
             router.push("/scan");
         } catch (err: unknown) {

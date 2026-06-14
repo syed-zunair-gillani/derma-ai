@@ -14,6 +14,7 @@ interface LoginPayload {
 
 interface AuthResponse {
   access_token?: string;
+  refresh_token?: string;
   token_type?: string;
   id?: string;
   email?: string;
@@ -32,5 +33,20 @@ export async function login(payload: LoginPayload): Promise<AuthResponse> {
   return request<AuthResponse>("/auth/login", {
     method: "POST",
     body: JSON.stringify(payload),
+  });
+}
+
+interface RefreshResponse {
+  access_token?: string;
+  refresh_token?: string;
+  token_type?: string;
+}
+
+export async function refreshAuth(
+  refreshToken: string
+): Promise<RefreshResponse> {
+  return request<RefreshResponse>("/auth/refresh", {
+    method: "POST",
+    body: JSON.stringify({ refresh_token: refreshToken }),
   });
 }

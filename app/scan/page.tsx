@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "@/src/components/scan/Sidebar";
 import DetectionResult from "@/src/components/scan/DetectionResult";
 import BentoGrid from "@/src/components/scan/BentoGrid";
@@ -9,11 +9,21 @@ import SkinAnalysisUpload from "@/src/components/scan/SkinAnalysisUpload";
 import SkinAnalysisHeader from "@/src/components/scan/SkinAnalysisHeader";
 import { type ScanResponse } from "@/src/services/scans";
 
+function getToken(): string | null {
+    if (typeof document === "undefined") return null;
+    const match = document.cookie.match(/(?:^|;\s*)token=([^;]*)/);
+    return match ? match[1] : localStorage.getItem("token");
+}
+
 export default function DermAIHistoryPage() {
     const [isNewScan, setIsNewScan] = useState(true);
-    const [isAuthenticated, setIsAuthanticated] = useState(true);
+    const [isAuthenticated, setIsAuthanticated] = useState(false);
     const [haveResult, setHaveResult] = useState(false);
     const [scanData, setScanData] = useState<ScanResponse | null>(null);
+
+    useEffect(() => {
+        setIsAuthanticated(!!getToken());
+    }, []);
 
     return (
         <div className="bg-slate-50 text-slate-900 min-h-screen">
