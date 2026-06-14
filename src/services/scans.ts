@@ -39,6 +39,10 @@ export type ScanListItem = Pick<
   "scan_id" | "image_url" | "primary_detection"
 >;
 
+export async function getScan(scan_id: string): Promise<ScanResponse> {
+  return request<ScanResponse>(`/scans/${scan_id}`);
+}
+
 export async function getScans(): Promise<ScanListItem[]> {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;

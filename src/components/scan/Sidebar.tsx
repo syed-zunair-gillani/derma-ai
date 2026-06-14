@@ -3,14 +3,16 @@
 import React, { useEffect, useState } from "react";
 import { useSidebar } from "@/src/context/SidebarContext";
 import { getScans, type ScanListItem } from "@/src/services/scans";
+import Image from "next/image";
 
 interface SidebarProps {
     extraScans?: ScanListItem[];
     onNewScanClick?: () => void;
     onHistoryClick?: (scanId: string) => void;
+    activeScanId?: string | null
 }
 
-export default function Sidebar({ extraScans = [], onNewScanClick, onHistoryClick }: SidebarProps) {
+export default function Sidebar({ extraScans = [], onNewScanClick, onHistoryClick, activeScanId = null }: SidebarProps) {
     const { isOpen, setIsOpen } = useSidebar();
     const [scans, setScans] = useState<ScanListItem[]>([]);
     const [loading, setLoading] = useState(false);
@@ -76,13 +78,17 @@ export default function Sidebar({ extraScans = [], onNewScanClick, onHistoryClic
                                 <div
                                     key={scan.scan_id}
                                     onClick={() => onHistoryClick && onHistoryClick(scan.scan_id)}
-                                    className="p-3 py-2 rounded-xl border cursor-pointer transition-all hover:bg-slate-50 border-transparent hover:border-slate-200"
+                                    className={`p-3 py-2 rounded-xl border cursor-pointer transition-all hover:bg-slate-50 hover:border-slate-200 ${
+                                        activeScanId === scan.scan_id
+                                            ? "border-indigo-100 bg-indigo-50/60"
+                                            : "border-transparent"
+                                    }`}
                                 >
                                     <div className="flex gap-3">
                                         <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
                                             <img
-                                                src={scan.image_url}
-                                                alt={scan.primary_detection.disease.charAt(0)}
+                                                src={scan?.image_url}
+                                                alt={scan.primary_detection.disease}
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>

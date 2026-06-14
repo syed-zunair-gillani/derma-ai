@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Sidebar from "@/src/components/scan/Sidebar";
 import DetectionResult from "@/src/components/scan/DetectionResult";
 import BentoGrid from "@/src/components/scan/BentoGrid";
@@ -24,6 +25,7 @@ function toScanListItem(data: ScanResponse): ScanListItem {
 }
 
 export default function DermAIHistoryPage() {
+    const router = useRouter();
     const [isNewScan, setIsNewScan] = useState(true);
     const [isAuthenticated, setIsAuthanticated] = useState(false);
     const [haveResult, setHaveResult] = useState(false);
@@ -52,8 +54,9 @@ export default function DermAIHistoryPage() {
                 {
                     isAuthenticated && <Sidebar
                         extraScans={extraScans}
+                        activeScanId={scanData?.scan_id ?? null}
                         onNewScanClick={handleNewScan}
-                        onHistoryClick={() => setIsNewScan(false)}
+                        onHistoryClick={(id) => router.push(`/scan/${id}`)}
                     />
                 }
 
