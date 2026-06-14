@@ -176,7 +176,7 @@ const PrivacyPolicy = () => {
                   </h4>
 
                   <p className="text-sm text-slate-600">
-                    Improving the AI's ability to identify specific skin
+                    Improving the AI&apos;s ability to identify specific skin
                     conditions.
                   </p>
                 </div>

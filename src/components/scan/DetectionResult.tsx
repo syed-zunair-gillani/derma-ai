@@ -174,7 +174,7 @@ function CareChecklistCard() {
 
                 <div className="flex gap-3 items-center">
                     <span className="material-symbols-outlined text-red-500 text-[18px]">cancel</span>
-                    <p className="text-slate-200 text-sm font-medium">Don't pick active lesions</p>
+                    <p className="text-slate-200 text-sm font-medium">Don&apos;t pick active lesions</p>
                 </div>
             </div>
         </div>

@@ -68,7 +68,7 @@ export default function BentoGrid() {
                 </div>
             </div>
 
-            {/* Do's and Don'ts */}
+            {/* Do&apos;s and Don&apos;ts */}
             <div className="md:col-span-2 bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">
                     Do&apos;s and Don&apos;ts

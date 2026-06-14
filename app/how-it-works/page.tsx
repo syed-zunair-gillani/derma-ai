@@ -145,7 +145,7 @@ export default function HowItWorks() {
                             <span className="text-indigo-400">Behind Every Analysis</span>
                         </h2>
                         <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
-                            Dermic's neural network has been meticulously constructed using deep convolutional layers. It focuses on micro-features, vascular patterns, pigment variations, and structure morphology that are invisible to the naked eye.
+                            Dermic&apos;s neural network has been meticulously constructed using deep convolutional layers. It focuses on micro-features, vascular patterns, pigment variations, and structure morphology that are invisible to the naked eye.
                         </p>
 
                         <div className="grid grid-cols-2 gap-6">

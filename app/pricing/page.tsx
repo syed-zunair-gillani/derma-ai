@@ -88,7 +88,7 @@ const PricingPage = () => {
 
   const faqs = [
     {
-      question: "How accurate is DermAI's analysis?",
+      question: "How accurate is DermAI&apos;s analysis?",
       answer:
         "Our AI model is trained on over 2 million clinical images and holds an 89.4% diagnostic accuracy rate in clinical trials.",
     },

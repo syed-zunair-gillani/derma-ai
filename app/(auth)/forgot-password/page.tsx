@@ -29,7 +29,7 @@ const ResetPassword = () => {
             </h1>
 
             <p className="text-slate-500 text-base leading-relaxed">
-              Enter your email address and we'll send you a secure link to reset
+              Enter your email address and we&apos;ll send you a secure link to reset
               your password.
             </p>
           </div>
