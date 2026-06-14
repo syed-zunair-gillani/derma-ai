@@ -21,7 +21,7 @@ export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps
             setLoading(true);
             try {
                 const data = await getScans();
-                setScans(data);
+                setScans(Array.isArray(data) ? data : []);
             } catch {
                 setScans([]);
             } finally {
@@ -68,10 +68,10 @@ export default function Sidebar({ onNewScanClick, onHistoryClick }: SidebarProps
                             <div className="flex items-center justify-center py-8">
                                 <span className="material-symbols-outlined animate-spin text-slate-400">sync</span>
                             </div>
-                        ) : scans.length === 0 ? (
+                        ) : scans?.length === 0 ? (
                             <p className="text-sm text-slate-400 text-center py-8">No scans yet</p>
                         ) : (
-                            scans.map((scan) => (
+                            scans?.map((scan) => (
                                 <div
                                     key={scan.scan_id}
                                     onClick={() => onHistoryClick && onHistoryClick(scan.scan_id)}

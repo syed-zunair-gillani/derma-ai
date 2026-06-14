@@ -43,7 +43,18 @@ export async function getScans(): Promise<ScanListItem[]> {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-  return request<ScanListItem[]>("/scans", {
+  const data = await request<unknown>("/scans", {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
+
+  if (Array.isArray(data)) return data as ScanListItem[];
+
+  if (data && typeof data === "object") {
+    for (const key of ["scans", "data", "items", "results"]) {
+      const value = (data as Record<string, unknown>)[key];
+      if (Array.isArray(value)) return value as ScanListItem[];
+    }
+  }
+
+  return [];
 }

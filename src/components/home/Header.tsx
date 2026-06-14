@@ -1,13 +1,26 @@
 'use client'
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useSidebar } from '@/src/context/SidebarContext';
 
 export default function Header() {
+  const router = useRouter();
   const pathname = usePathname();
   const { isOpen, toggleSidebar } = useSidebar();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const isScanPage = pathname === '/scan';
+
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem("token"));
+  }, [pathname]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    router.push("/");
+  };
 
   return (
     <header className="w-full flex items-center justify-between px-4 md:px-6 py-4 bg-white/80 backdrop-blur-md fixed top-0 z-50 border-b border-gray-100">
@@ -39,10 +52,18 @@ export default function Header() {
 
       {/* Actions */}
       <div className="flex items-center gap-4">
-        <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-gray-900 hidden sm:block">Login</Link>
-        <Link href="/register" className="bg-[#0b103e] hover:bg-blue-900 text-white text-sm font-medium py-2 px-5 rounded-lg transition-all shadow-md hover:shadow-lg">
-          Sign Up
-        </Link>
+        {isAuthenticated ? (
+          <button onClick={handleLogout} className="text-sm font-medium text-gray-700 hover:text-gray-900 hidden sm:block">
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-gray-900 hidden sm:block">Login</Link>
+            <Link href="/register" className="bg-[#0b103e] hover:bg-blue-900 text-white text-sm font-medium py-2 px-5 rounded-lg transition-all shadow-md hover:shadow-lg">
+              Sign Up
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
