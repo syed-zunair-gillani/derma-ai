@@ -249,7 +249,7 @@ export default function DetectionResult({ data }: DetectionResultProps) {
                 </div>
 
                 {/* All Detections */}
-                {data.results.length > 1 && (
+                {/* {data.results.length > 1 && (
                     <div className="bg-white rounded-xl p-5 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100">
                         <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">
                             All Detections
@@ -269,7 +269,7 @@ export default function DetectionResult({ data }: DetectionResultProps) {
                             ))}
                         </div>
                     </div>
-                )}
+                )} */}
 
                 {/* Bottom Row */}
                 <div className="flex flex-col md:flex-row print:flex-row gap-6 w-full">

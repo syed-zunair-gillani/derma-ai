@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "@/src/components/home/Header";
-import Footer from "@/src/components/home/Footer";
+import FooterWrapper from "@/src/components/home/FooterWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -41,7 +41,7 @@ export default function RootLayout({
         <SidebarProvider>
           <Header />
           {children}
-          <Footer />
+          <FooterWrapper />
         </SidebarProvider>
       </body>
     </html>
