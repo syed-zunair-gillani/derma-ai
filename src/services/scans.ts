@@ -37,10 +37,21 @@ export async function createScan(files: File[]): Promise<ScanResponse> {
 export type ScanListItem = Pick<
   ScanResponse,
   "scan_id" | "image_url" | "primary_detection"
->;
+> & { name?: string };
 
 export async function getScan(scan_id: string): Promise<ScanResponse> {
   return request<ScanResponse>(`/scans/${scan_id}`);
+}
+
+export async function deleteScan(scan_id: string): Promise<void> {
+  await request(`/scans/${scan_id}`, { method: "DELETE" });
+}
+
+export async function renameScan(scan_id: string, title: string): Promise<void> {
+  await request(`/scans/${scan_id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ title }),
+  });
 }
 
 export async function getScans(): Promise<ScanListItem[]> {

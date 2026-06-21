@@ -116,7 +116,7 @@ async function request<T>(
       });
 
       if (retryRes.ok) {
-        return retryRes.json();
+        return retryRes.status === 204 ? (undefined as T) : retryRes.json();
       }
 
       const retryBody = await retryRes.json().catch(() => null);
@@ -131,6 +131,8 @@ async function request<T>(
     }
     throw new ApiError("Unauthorized", 401);
   }
+
+  if (res.status === 204) return undefined as T;
 
   if (!res.ok) {
     const body = await res.json().catch(() => null);

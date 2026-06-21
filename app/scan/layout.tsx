@@ -2,9 +2,10 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { Toaster, toast } from "sonner";
 import Sidebar from "@/src/components/scan/Sidebar";
 import { ScanLayoutProvider, useScanLayout } from "@/src/context/ScanLayoutContext";
-import { getScans, type ScanListItem } from "@/src/services/scans";
+import { getScans, deleteScan, renameScan, type ScanListItem } from "@/src/services/scans";
 
 function getToken(): string | null {
     if (typeof document === "undefined") return null;
@@ -15,7 +16,7 @@ function getToken(): string | null {
 function ScanSidebar() {
     const router = useRouter();
     const pathname = usePathname();
-    const { extraScans, setNewScanSignal } = useScanLayout();
+    const { extraScans, setNewScanSignal, removeExtraScan, customNames, setCustomName } = useScanLayout();
     const [scans, setScans] = useState<ScanListItem[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -36,6 +37,27 @@ function ScanSidebar() {
         }
     }, [pathname, router, setNewScanSignal]);
 
+    const handleRenameScan = useCallback(async (scanId: string, title: string) => {
+        try {
+            await renameScan(scanId, title);
+            setCustomName(scanId, title);
+            toast.success("Scan renamed successfully.");
+        } catch {
+            toast.error("Failed to rename scan. Please try again.");
+        }
+    }, [setCustomName]);
+
+    const handleDeleteScan = useCallback(async (scanId: string) => {
+        try {
+            await deleteScan(scanId);
+            setScans((prev) => prev.filter((s) => s.scan_id !== scanId));
+            removeExtraScan(scanId);
+            toast.success("Scan deleted successfully.");
+        } catch {
+            toast.error("Failed to delete scan. Please try again.");
+        }
+    }, [removeExtraScan]);
+
     return (
         <Sidebar
             scans={scans}
@@ -44,6 +66,9 @@ function ScanSidebar() {
             activeScanId={activeScanId}
             onNewScanClick={handleNewScan}
             onHistoryClick={(id) => router.push(`/scan/${id}`)}
+            onRenameScan={handleRenameScan}
+            onDeleteScan={handleDeleteScan}
+            customNames={customNames}
         />
     );
 }
@@ -57,6 +82,7 @@ export default function ScanLayout({ children }: { children: React.ReactNode }) 
 
     return (
         <ScanLayoutProvider>
+            <Toaster richColors position="top-center" />
             <div className="bg-slate-50 text-slate-900 min-h-screen">
                 <div className="flex mx-auto min-h-screen">
                     {isAuthenticated && <ScanSidebar />}
