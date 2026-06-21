@@ -12,6 +12,10 @@ interface LoginPayload {
   password: string;
 }
 
+interface ForgotPasswordPayload {
+  email: string;
+}
+
 interface AuthResponse {
   access_token?: string;
   refresh_token?: string;
@@ -40,6 +44,15 @@ interface RefreshResponse {
   access_token?: string;
   refresh_token?: string;
   token_type?: string;
+}
+
+export async function forgotPassword(
+  payload: ForgotPasswordPayload
+): Promise<Record<string, unknown>> {
+  return request<Record<string, unknown>>("/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export async function refreshAuth(

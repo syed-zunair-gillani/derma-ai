@@ -1,105 +1,122 @@
+"use client"
+import React, { useState, type FormEvent } from "react";
+import { Mail, ArrowLeft, ShieldCheck } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import { forgotPassword } from "@/src/services/auth";
+import { toast } from "sonner";
 
-const ResetPassword = () => {
+const ForgotPasswordPage = () => {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await forgotPassword({ email });
+      setSent(true);
+      toast.success("Recovery link sent! Check your email.");
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Something went wrong.";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="bg-[#f7f9fb] min-h-screen flex flex-col text-[#191c1e]">
+    <div className="min-h-screen flex flex-col bg-[#f7f9fb] text-[#191c1e]">
+      <main className="flex flex-1 items-center justify-center px-6 pt-28 pb-12">
+        <div className="w-full max-w-md">
+          <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-[0_4px_20px_rgba(0,6,102,0.04)] md:p-10">
+            {!sent ? (
+              <>
+                <div className="mb-8 text-center">
+                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 text-indigo-900">
+                    <Mail size={28} />
+                  </div>
 
-      {/* Main */}
-      <main className="flex-grow flex items-center justify-center px-6 pt-28 pb-12 relative overflow-hidden">
-        {/* Background Blur */}
-        <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-30">
-          <div className="absolute top-1/4 -left-20 w-96 h-96 bg-indigo-200 blur-[120px] rounded-full"></div>
+                  <h2 className="mb-2 text-4xl font-bold text-indigo-900">
+                    Reset Password
+                  </h2>
 
-          <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-200 blur-[100px] rounded-full"></div>
-        </div>
-
-        {/* Card */}
-        <section className="w-full max-w-md bg-white p-8 md:p-10 rounded-2xl shadow-2xl border border-slate-200/40 text-center">
-          {/* Top */}
-          <div className="mb-8">
-            <div className="w-16 h-16 bg-indigo-100 text-indigo-900 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="material-symbols-outlined text-4xl">
-                lock_reset
-              </span>
-            </div>
-
-            <h1 className="font-[Manrope] text-3xl font-bold text-indigo-900 mb-2">
-              Reset Password
-            </h1>
-
-            <p className="text-slate-500 text-base leading-relaxed">
-              Enter your email address and we&apos;ll send you a secure link to reset
-              your password.
-            </p>
-          </div>
-
-          {/* Form */}
-          <form className="space-y-6 text-left">
-            <div className="space-y-2">
-              <label
-                htmlFor="email"
-                className="text-sm font-semibold text-slate-600 ml-1"
-              >
-                Email Address
-              </label>
-
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                  <span className="material-symbols-outlined text-[20px]">
-                    mail
-                  </span>
+                  <p className="text-slate-500">
+                    Enter your email address and we&apos;ll send you a secure
+                    link to reset your password.
+                  </p>
                 </div>
 
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  className="w-full pl-11 pr-4 py-4 bg-slate-50 rounded-xl border border-slate-300 focus:border-indigo-700 focus:ring-2 focus:ring-indigo-200 outline-none transition-all duration-200 placeholder:text-slate-400"
-                />
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="mb-2 block text-sm font-semibold text-slate-500"
+                    >
+                      Email Address
+                    </label>
+
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="name@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none transition focus:border-indigo-700 focus:ring-2 focus:ring-indigo-100"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full rounded-xl bg-indigo-900 py-4 text-sm font-semibold text-white shadow-md transition hover:bg-indigo-800 hover:shadow-lg active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {loading ? "Sending..." : "Send Recovery Link"}
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className="text-center">
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-700">
+                  <Mail size={28} />
+                </div>
+
+                <h2 className="mb-2 text-3xl font-bold text-indigo-900">
+                  Check Your Email
+                </h2>
+
+                <p className="text-slate-500">
+                  We&apos;ve sent a recovery link to{" "}
+                  <span className="font-semibold text-indigo-700">{email}</span>
+                  . Please check your inbox and follow the instructions.
+                </p>
               </div>
+            )}
+
+            <div className="mt-8 pt-6 border-t border-slate-200 text-center">
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-700 hover:underline"
+              >
+                <ArrowLeft size={18} />
+                Back to Login
+              </Link>
             </div>
-
-            {/* Button */}
-            <button
-              type="submit"
-              className="w-full py-4 bg-indigo-900 text-white font-semibold rounded-xl shadow-lg hover:bg-indigo-800 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2"
-            >
-              Send Recovery Link
-
-              <span className="material-symbols-outlined text-[20px]">
-                arrow_forward
-              </span>
-            </button>
-          </form>
-
-          {/* Back */}
-          <div className="mt-8 pt-6 border-t border-slate-200">
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-2 text-indigo-900 font-semibold hover:underline hover:opacity-80 transition-all"
-            >
-              <span className="material-symbols-outlined text-[18px]">
-                arrow_back
-              </span>
-
-              Back to Login
-            </Link>
           </div>
-        </section>
 
-        {/* Decorative Image */}
-        <div className="hidden lg:block absolute left-12 bottom-12 w-64 h-64 opacity-20">
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUQ0S6HHhCLAWvjqAOOvXQn3uUne6cjbhzHQhNFI2EoIJZ-gUOvGXi4BnmKEB_l2BhaDE2v1cCWc25n-u3MTqcTFEDvx4YNgYZjBMkWdUed7e8dg3cdwVqIuSuLd0ZF4nihap2r33KvFjv33Qh8oKwQB87Mu83hc9cYHc7MyauuD4VUIdGGZFfpbsk_f70zXJyrt-HY_zX-RhGKbv_cCPGmsdrLSJvBRt9Qa3gBgqb-4hJsAhY_l3QXQY96aDiTi4dAxZVOVMvZi4"
-            alt="Medical Illustration"
-            className="w-full h-full object-cover rounded-2xl"
-          />
+          <div className="mt-8 flex items-center justify-center gap-2 opacity-60">
+            <ShieldCheck size={16} className="text-indigo-900" />
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+              HIPAA Compliant & Secure
+            </span>
+          </div>
         </div>
       </main>
-
     </div>
   );
 };
 
-export default ResetPassword;
+export default ForgotPasswordPage;
