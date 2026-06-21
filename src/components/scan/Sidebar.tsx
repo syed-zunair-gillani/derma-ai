@@ -164,7 +164,7 @@ export default function Sidebar({ extraScans = [], scans, loading, onNewScanClic
                                                     e.stopPropagation();
                                                     setOpenDropdownId(openDropdownId === scan.scan_id ? null : scan.scan_id);
                                                 }}
-                                                className="absolute top-1.5 right-1.5 p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 opacity-0 group-hover:opacity-100 transition-all"
+                                                className="absolute top-4 right-1.5 p-1 rounded-md text-slate-400 hover:text-slate-700 opacity-0 cursor-pointer group-hover:opacity-100 transition-all"
                                                 title="More options"
                                             >
                                                 <span className="material-symbols-outlined text-[18px]">more_vert</span>
